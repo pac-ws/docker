@@ -8,7 +8,7 @@ then
 fi
 
 print_usage() {
-  printf "bash $0 [-d|--directory <workspace directory>] [--with-cuda] [--with-ros]\n"
+  printf "bash $0 [-d|--directory <workspace directory>]\n"
 }
 
 eval set -- "$params"
@@ -21,6 +21,7 @@ if [ "$(uname -m)" == "aarch64" ]; then
   IMAGE_TAG=arm64
 fi
 IMAGE_NAME="${IMAGE_BASE_NAME}:${IMAGE_TAG}"
+docker pull ${IMAGE_NAME}
 WS_DIR="/data/pac_ws"
 
 while true; do
