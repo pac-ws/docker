@@ -1,4 +1,4 @@
-FROM agarwalsaurav/pytorch_base:arm64-jammy-torch2.4.1-humble
+FROM agarwalsaurav/pytorch_base:arm64-jammy-torch2.5.1-humble
 # FROM agarwalsaurav/pytorch_base:jammy-torch2.4.1-humble
 RUN git clone -b release/1.14 https://github.com/PX4/px4_msgs.git /opt/ros/extra/src/px4_msgs
 WORKDIR /opt/ros/extra/
