@@ -32,9 +32,6 @@ done
 MAIN_DIR=${TMP_DIR}/main/
 BUILD_DIR=${TMP_DIR}/build/
 
-mkdir -p ${MAIN_DIR}
-mkdir -p ${BUILD_DIR}
-
 if [ -z "$INSTALL_DIR" ]; then
 	CMAKE_END_FLAGS="-DCMAKE_BUILD_TYPE=Release"
 else
@@ -63,13 +60,13 @@ InstallCGAL () {
 
 InstallGeoGraphicLib () {
 	echo "Setting up geographiclib"
-	wget --tries=4 https://github.com/geographiclib/geographiclib/archive/refs/tags/v${GEOGRAPHICLIB_VERSION}.tar.gz -P ${MAIN_DIR}/src
+	wget --tries=4 https://github.com/geographiclib/geographiclib/archive/refs/tags/v2.3.tar.gz -P ${MAIN_DIR}/src
   if [ $? -ne 0 ]; then
     echo "Failed to download geographiclib"
     exit 1
   fi
-	tar -xf ${MAIN_DIR}/src/v${GEOGRAPHICLIB_VERSION}.tar.gz -C ${MAIN_DIR}/src/
-	cmake -S ${MAIN_DIR}/src/geographiclib-${GEOGRAPHICLIB_VERSION} -B ${BUILD_DIR}/geographiclib ${CMAKE_END_FLAGS} -DBUILD_BOTH_LIBS=ON
+	tar -xf ${MAIN_DIR}/src/v2.3.tar.gz -C ${MAIN_DIR}/src/
+	cmake -S ${MAIN_DIR}/src/geographiclib-2.3 -B ${BUILD_DIR}/geographiclib ${CMAKE_END_FLAGS} -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
 	cmake --build ${BUILD_DIR}/geographiclib -j$(nproc)
 	cmake --install ${BUILD_DIR}/geographiclib
 	if [ $? -eq 0 ]; then
@@ -280,7 +277,7 @@ InstallBoost () {
 	fi
 }
 
-BOOST_VERSION=1.85.0
+BOOST_VERSION=1.86.0
 BOOST_TAR_NAME=$(echo boost_${BOOST_VERSION} | tr . _)
 GMP_VERSION=6.3.0
 GMP_TAR_NAME=$(echo gmp-${GMP_VERSION})
@@ -288,8 +285,8 @@ MPFR_VERSION=4.2.1
 MPFR_TAR_NAME=$(echo mpfr-${MPFR_VERSION})
 EIGEN_VERSION=3.4.0
 EIGEN_TAR_NAME=$(echo eigen-${EIGEN_VERSION})
-CGAL_VERSION=5.6.1
-GEOGRAPHICLIB_VERSION=2.4
+CGAL_VERSION=6.0.1
+CGAL_TAR_NAME=$(echo CGAL-${CGAL_VERSION})
 
 if [ -n "$BOOST" ]; then
 	InstallBoost
@@ -326,6 +323,7 @@ fi
 if [ -n "$OPENCV" ]; then
 	InstallOpenCV
 fi
+
 
 # InstallGMP
 # InstallMPFR

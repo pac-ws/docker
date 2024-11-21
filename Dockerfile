@@ -29,8 +29,6 @@ RUN rm -rf /var/lib/apt/lists/*; \
 		rm -f /var/cache/apt/archives/parital/*.deb; \
 		rm -f /var/cache/apt/*.bin
 
-RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib:/opt/libtorch/lib:${LD_LIBRARY_PATH}' >> /root/.bashrc
-RUN echo "source /opt/ros/humble/setup.bash" >> /root/.bashrc
-RUN echo "source /opt/ros/extra/install/local_setup.bash" >> /root/.bashrc
 RUN echo "export ROS_DOMAIN_ID=10" >> /root/.bashrc
+RUN echo "source /opt/ros/extra/install/local_setup.bash" >> /root/.bashrc
 RUN echo "source /workspace/install/local_setup.bash" >> /root/.bashrc
