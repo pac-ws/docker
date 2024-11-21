@@ -1,8 +1,11 @@
-FROM agarwalsaurav/pytorch_base:arm64-jammy-torch2.5.1-humble
-# FROM agarwalsaurav/pytorch_base:jammy-torch2.4.1-humble
+# FROM agarwalsaurav/pytorch_base:arm64-jammy-torch2.5.1-humble
+FROM agarwalsaurav/pytorch_base:arm64-noble-torch2.5.1-jazzy
+# FROM agarwalsaurav/pytorch_base:jammy-torch2.5.1-humble
+# FROM agarwalsaurav/pytorch_base:noble-torch2.5.1-jazzy
 RUN git clone -b release/1.14 https://github.com/PX4/px4_msgs.git /opt/ros/extra/src/px4_msgs
 WORKDIR /opt/ros/extra/
-RUN . /opt/ros/humble/setup.sh && colcon build --packages-select px4_msgs
+# RUN . /opt/ros/humble/setup.sh && colcon build --packages-select px4_msgs
+RUN . /opt/ros/jazzy/setup.sh && colcon build --packages-select px4_msgs
 
 COPY install_dependencies.sh /opt/install_dependencies.sh
 RUN chmod +x /opt/install_dependencies.sh
@@ -14,14 +17,13 @@ RUN tar -xvf /opt/CoverageControl.tar.xz -C /opt/; \
 WORKDIR /opt/CoverageControl
 RUN bash setup.sh
 RUN /opt/venv/bin/pip install .
-RUN /opt/venv/bin/pip install scipy
 
 COPY GeoLocalTransform /opt/GeoLocalTransform
 WORKDIR /opt/GeoLocalTransform
 RUN /opt/venv/bin/pip install .
+RUN /opt/venv/bin/pip install tomli
 
 RUN /opt/venv/bin/pip uninstall -y setuptools_scm
-RUN apt-get update && apt-get install -y neovim
 
 # Remove cache to reduce image size
 RUN rm -rf /var/lib/apt/lists/*; \
