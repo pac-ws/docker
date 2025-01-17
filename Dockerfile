@@ -3,31 +3,46 @@ ARG IMAGE_TAG=noble-torch2.5.1-jazzy
 # FROM agarwalsaurav/pytorch_base:arm64-noble-torch2.5.1-jazzy
 # FROM agarwalsaurav/pytorch_base:noble-torch2.5.1-jazzy
 FROM agarwalsaurav/pytorch_base:${IMAGE_TAG}
-RUN apt install -y \
-    ros-jazzy-rqt \
-    ros-jazzy-rqt-action \
-    ros-jazzy-rqt-bag \
-    ros-jazzy-rqt-bag-plugins \
-    ros-jazzy-rqt-common-plugins \
-    ros-jazzy-rqt-console \
-    ros-jazzy-rqt-controller-manager \
-    ros-jazzy-rqt-dotgraph \
-    ros-jazzy-rqt-graph \
-    ros-jazzy-rqt-gui \
-    ros-jazzy-rqt-gui-cpp \
-    ros-jazzy-rqt-gui-py \
-    ros-jazzy-rqt-image-overlay \
-    ros-jazzy-rqt-image-overlay-layer \
-    ros-jazzy-rqt-image-view \
-    ros-jazzy-rqt-msg \
-    ros-jazzy-rqt-plot \
-    ros-jazzy-rqt-publisher \
-    ros-jazzy-rqt-reconfigure \
-    ros-jazzy-rqt-robot-dashboard \
-    ros-jazzy-rqt-runtime-monitor \
-    ros-jazzy-rqt-service-caller \
-    ros-jazzy-rqt-tf-tree \
-    ros-jazzy-rqt-topic
+RUN apt-get -y update \
+    && add-apt-repository universe \
+    && locale-gen en_US en_US.UTF-8 \
+    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
+    && export LANG=en_US.UTF-8 \
+    && curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
+    && apt-get -y update \
+    && apt-get -y upgrade \
+    && apt install -y \
+                  ros-${ROS_DISTRO}-rqt \
+                  ros-${ROS_DISTRO}-rqt-action \
+                  ros-${ROS_DISTRO}-rqt-bag \
+                  ros-${ROS_DISTRO}-rqt-bag-plugins \
+                  ros-${ROS_DISTRO}-rqt-common-plugins \
+                  ros-${ROS_DISTRO}-rqt-console \
+                  ros-${ROS_DISTRO}-rqt-controller-manager \
+                  ros-${ROS_DISTRO}-rqt-dotgraph \
+                  ros-${ROS_DISTRO}-rqt-graph \
+                  ros-${ROS_DISTRO}-rqt-gui \
+                  ros-${ROS_DISTRO}-rqt-gui-cpp \
+                  ros-${ROS_DISTRO}-rqt-gui-py \
+                  ros-${ROS_DISTRO}-rqt-image-overlay \
+                  ros-${ROS_DISTRO}-rqt-image-overlay-layer \
+                  ros-${ROS_DISTRO}-rqt-image-view \
+                  ros-${ROS_DISTRO}-rqt-msg \
+                  ros-${ROS_DISTRO}-rqt-plot \
+                  ros-${ROS_DISTRO}-rqt-publisher \
+                  ros-${ROS_DISTRO}-rqt-reconfigure \
+                  ros-${ROS_DISTRO}-rqt-robot-dashboard \
+                  ros-${ROS_DISTRO}-rqt-runtime-monitor \
+                  ros-${ROS_DISTRO}-rqt-service-caller \
+                  ros-${ROS_DISTRO}-rqt-tf-tree \
+                  ros-${ROS_DISTRO}-rqt-topic \
+    && apt-get -y autoremove \
+    && apt-get -y clean autoclean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && rm -f /var/cache/apt/archives/*.deb \
+    && rm -f /var/cache/apt/archives/parital/*.deb \
+    && rm -f /var/cache/apt/*.bin
 
 RUN git clone -b release/1.14 https://github.com/PX4/px4_msgs.git /opt/ros/extra/src/px4_msgs
 WORKDIR /opt/ros/extra/
