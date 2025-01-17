@@ -5,7 +5,7 @@ set -x
 # Get latest CoverageControl repo from dev branch
 wget https://github.com/KumarRobotics/CoverageControl/archive/refs/heads/dev.zip -O CoverageControl.zip
 FROM_IMAGE_TAG=noble-torch2.5.1-jazzy
-docker buildx build --no-cache -t agarwalsaurav/pac:noble -t agarwalsaurav/pac:latest --build-arg IMAGE_TAG=${FROM_IMAGE_TAG} --push .
+docker buildx build --no-cache -t agarwalsaurav/pac:jazzy -t agarwalsaurav/pac:latest --build-arg IMAGE_TAG=${FROM_IMAGE_TAG} --push .
 if [ $? -ne 0 ]; then
     echo "Failed to build image"
     exit 1
