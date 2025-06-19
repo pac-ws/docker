@@ -74,6 +74,6 @@ RUN rm -rf /var/lib/apt/lists/*; \
 
 WORKDIR /root
 
-RUN echo "export ROS_DOMAIN_ID=10" >> /root/.bashrc
 RUN echo "source /opt/ros/extra/install/local_setup.bash" >> /root/.bashrc
 RUN echo "source /workspace/install/local_setup.bash" >> /root/.bashrc
+RUN sed -i '/^export ROS_DOMAIN_ID/d' /root/.bashrc
